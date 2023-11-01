@@ -86,8 +86,9 @@ export async function loader({ request, context, params }: DataFunctionArgs) {
 }
 
 export async function action({ request }: ActionArgs) {
+  console.log('request', request);
   const requestIP = request.headers.get('x-forwarded-for') as string;
-
+  console.log('requestIP', requestIP);
   if (isMootaIP(requestIP)) {
     if (request.method === 'POST') {
       try {
@@ -202,7 +203,9 @@ export async function action({ request }: ActionArgs) {
 
 function isMootaIP(requestIP: string) {
   const allowedIPs = process.env.ALLOWED_IPS?.split(',') || [];
+  console.log('allowedIPs', allowedIPs);
   const allowedIPSandBox = process.env.ALLOWED_IPS_SAND?.split(',') || [];
+  console.log('allowedIPSandBox', allowedIPSandBox);
   return allowedIPs.includes(requestIP) || allowedIPSandBox.includes(requestIP);
 }
 function verifySignature(secretKey: string, data: string, signature: string) {
